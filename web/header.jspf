@@ -1,0 +1,216 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*, java.util.*, ovr.*" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean View Resort</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a1128; /* Deep navy blue background */
+            --bg-glass: rgba(10, 17, 40, 0.85); /* Glass effect matching the navy */
+            --neon-accent: #0ea5e9; /* Bright neon blue accent */
+            --neon-glow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 20px rgba(14, 165, 233, 0.3);
+            --text-light: #ffffff;
+            --text-muted: #94a3b8;
+            --card-border: rgba(14, 165, 233, 0.2); /* Subtle blue borders */
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(rgba(10, 17, 40, 0.85), rgba(10, 17, 40, 0.95)), url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2062&auto=format&fit=crop') center/cover fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Ensure Bootstrap text colors map directly to our CSS variables */
+        .text-light { color: var(--text-light) !important; }
+        .text-muted { color: var(--text-muted) !important; }
+        .border-secondary { border-color: var(--card-border) !important; }
+
+        .table-dark { 
+            --bs-table-bg: transparent; 
+            --bs-table-color: var(--text-light);
+            --bs-table-border-color: var(--card-border);
+            --bs-table-striped-bg: rgba(255,255,255,0.02);
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Neon Buttons */
+        .btn-neon {
+            background: transparent;
+            color: var(--neon-accent);
+            border: 2px solid var(--neon-accent);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--neon-accent);
+            z-index: -1;
+            transition: transform 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        .btn-neon:hover {
+            color: #fff;
+            box-shadow: var(--neon-glow);
+        }
+
+        .btn-neon:hover::before {
+            transform: scaleX(1);
+        }
+
+        .btn-neon:active {
+            transform: scale(0.97);
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            border-radius: 0.5rem;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(255,255,255,0.1);
+            border-color: var(--neon-accent);
+            box-shadow: none;
+            color: #fff;
+        }
+
+        /* Navbar */
+        .navbar-glass {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff !important;
+        }
+        .navbar-brand span {
+            color: var(--neon-accent);
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        
+        /* Toast positioning */
+        .toast-container { z-index: 9999; }
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--neon-accent);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-glass sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.jsp"><i class="fa-solid fa-water me-2"></i>Ocean<span>View</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="gallery.jsp">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="help.jsp">Support</a></li>
+        <c:choose>
+            <c:when test="${not empty sessionScope.user}">
+                <li class="nav-item"><a class="nav-link" href="dashboard.jsp">Dashboard</a></li>
+                <li class="nav-item d-flex align-items-center ms-3 me-2">
+                    <span class="badge border border-warning text-warning bg-dark px-3 py-2" style="letter-spacing: 1px; font-weight: 600;">
+                        <i class="fa-solid fa-id-badge me-1"></i> ${sessionScope.user.role}
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <form action="AuthServlet" method="post" class="d-inline ms-3">
+                        <input type="hidden" name="action" value="logout">
+                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">Logout <i class="fa-solid fa-right-from-bracket ms-1"></i></button>
+                    </form>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="nav-item ms-3"><a class="btn btn-neon btn-sm" href="login.jsp">Login</a></li>
+            </c:otherwise>
+        </c:choose>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Global Toast Container -->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <% if(request.getParameter("msg") != null && request.getAttribute("hideSuccessToast") == null) { %>
+    <div class="toast show animate__animated animate__fadeInUp" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-success text-white">
+        <strong class="me-auto"><i class="fa-solid fa-check-circle me-1"></i> Success</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body"><%= request.getParameter("msg") %></div>
+    </div>
+    <% } %>
+    
+    <% if(request.getParameter("error") != null) { %>
+    <div class="toast show animate__animated animate__shakeX border-danger" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-danger text-white">
+        <strong class="me-auto"><i class="fa-solid fa-triangle-exclamation me-1"></i> Error</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body"><%= request.getParameter("error") %></div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<main class="flex-grow-1">

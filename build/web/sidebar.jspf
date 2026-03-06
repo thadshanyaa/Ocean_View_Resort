@@ -1,0 +1,71 @@
+<div class="glass-card p-4 h-100">
+    <div class="text-center mb-4">
+        <div class="bg-primary bg-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 text-white" style="width: 80px; height: 80px; box-shadow: 0 0 15px var(--neon-accent);">
+            <i class="fa-solid fa-user-tie fa-2x"></i>
+        </div>
+        <h5>${sessionScope.user.username}</h5>
+        <span class="badge bg-info text-dark rounded-pill">${sessionScope.user.role}</span>
+    </div>
+    
+    <hr class="border-secondary">
+    
+    <div class="d-grid gap-2">
+        <c:choose>
+            <%-- GOD MODE: MANAGER --%>
+            <c:when test="${sessionScope.user.role == 'Manager'}">
+                <!-- Operational -->
+                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Executive Dashboard</a>
+                <a href="AvailabilityServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-calendar-check me-2"></i> Master Availability</a>
+                <a href="NewReservationServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-plus-circle me-2"></i> Override Booking</a>
+                <a href="searchReservation.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-magnifying-glass me-2"></i> Guest Records</a>
+                <!-- Financial -->
+                <hr class="border-secondary my-1">
+                <!-- Financial links removed (redundant) -->
+                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Revenue Reports (PDF)</a>
+                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-vial-circle-check me-2"></i> Testing Report (PDF)</a>
+            </c:when>
+
+            <%-- SECURITY & MANAGEMENT MODE: ADMIN --%>
+            <c:when test="${sessionScope.user.role == 'Admin'}">
+                <a href="AdminPanelServlet?view=dashboard" class="btn btn-outline-warning text-start ${param.view == 'dashboard' || empty param.view ? 'active' : ''}"><i class="fa-solid fa-gauge-high me-2"></i> Admin Dashboard</a>
+                <hr class="border-secondary my-1">
+                <a href="AdminPanelServlet?view=reservations" class="btn btn-outline-warning text-start ${param.view == 'reservations' ? 'active' : ''}"><i class="fa-solid fa-calendar-check me-2"></i> Reservations</a>
+                <a href="AdminPanelServlet?view=rooms" class="btn btn-outline-warning text-start ${param.view == 'rooms' ? 'active' : ''}"><i class="fa-solid fa-door-open me-2"></i> Room Management</a>
+                <a href="AdminPanelServlet?view=guests" class="btn btn-outline-warning text-start ${param.view == 'guests' ? 'active' : ''}"><i class="fa-solid fa-users me-2"></i> Guest Records</a>
+                <a href="AdminPanelServlet?view=staff" class="btn btn-outline-warning text-start ${param.view == 'staff' ? 'active' : ''}"><i class="fa-solid fa-user-shield me-2"></i> Staff Accounts</a>
+                <hr class="border-secondary my-1">
+                <a href="AdminPanelServlet?view=payments" class="btn btn-outline-warning text-start ${param.view == 'payments' ? 'active' : ''}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Payments & Bills</a>
+                <a href="AdminPanelServlet?view=reports" class="btn btn-outline-warning text-start ${param.view == 'reports' ? 'active' : ''}"><i class="fa-solid fa-chart-pie me-2"></i> Business Reports</a>
+            </c:when>
+
+            <%-- FINANCE MODE: ACCOUNTANT --%>
+            <c:when test="${sessionScope.user.role == 'Accountant'}">
+                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Finance Dashboard</a>
+                <hr class="border-secondary my-1">
+                <!-- Financial links removed (redundant) -->
+                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-wallet me-2"></i> Daily Cash Closing</a>
+                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Monthly Revenue (PDF)</a>
+            </c:when>
+
+            <%-- OPERATIONAL MODE: RECEPTIONIST --%>
+            <c:when test="${sessionScope.user.role == 'Receptionist'}">
+                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Front Desk</a>
+                <a href="AvailabilityServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-calendar-check me-2"></i> Check Availability</a>
+                <a href="NewReservationServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-plus-circle me-2"></i> New Walk-in Booking</a>
+                <a href="searchReservation.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-magnifying-glass me-2"></i> Find Reservation</a>
+                <hr class="border-secondary my-1">
+                <!-- Financial links removed (redundant) -->
+            </c:when>
+
+            <%-- SELF-SERVICE MODE: GUEST (DEFAULT) --%>
+            <c:otherwise>
+                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> My Dashboard</a>
+                <a href="NewReservationServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-calendar-plus me-2"></i> Book a Room</a>
+                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-suitcase me-2"></i> My Reservations</a>
+                <hr class="border-secondary my-1">
+                <a href="services.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-concierge-bell me-2"></i> Resort Services</a>
+                <a href="restaurant.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-utensils me-2"></i> Restaurant Menus</a>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</div>

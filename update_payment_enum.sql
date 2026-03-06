@@ -1,0 +1,1 @@
+ALTER TABLE payments MODIFY payment_status ENUM('PENDING', 'PAID', 'PARTIAL', 'FAILED') DEFAULT 'PENDING';
