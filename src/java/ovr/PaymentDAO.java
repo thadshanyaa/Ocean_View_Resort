@@ -126,7 +126,7 @@ public class PaymentDAO {
 
         String sql = "SELECT " +
                      " (SELECT IFNULL(SUM(amount_paid), 0) FROM payments WHERE DATE(paid_at) = CURDATE() AND payment_status='PAID') as today_revenue, " +
-                     " (SELECT COUNT(*) FROM reservations WHERE status='Pending' OR id IN (SELECT reservation_id FROM bills b LEFT JOIN payments p ON b.id=p.bill_id GROUP BY b.id HAVING SUM(IFNULL(p.amount_paid,0)) < b.total_amount)) as pending_count, " +
+                     " (SELECT COUNT(*) FROM reservations WHERE status='Pending' OR id IN (SELECT reservation_id FROM bills b LEFT JOIN payments p ON b.id=p.bill_id GROUP BY b.id HAVING SUM(IFNULL(p.amount_paid,0)) < MAX(b.total_amount))) as pending_count, " +
                      " (SELECT IFNULL(SUM(amount_paid), 0) FROM payments WHERE payment_status='PAID') as total_revenue, " +
                      " (SELECT COUNT(*) FROM bills) as total_invoices";
 
@@ -194,6 +194,33 @@ public class PaymentDAO {
                     java.util.Map<String, Object> map = new java.util.HashMap<>();
                     map.put("date", rs.getString("date"));
                     map.put("revenue", rs.getBigDecimal("revenue"));
+                    list.add(map);
+                }
+            }
+        }
+        return list;
+    }
+
+    public List<java.util.Map<String, Object>> getRecentPayments(int limit) throws SQLException {
+        List<java.util.Map<String, Object>> list = new ArrayList<>();
+        String sql = "SELECT p.*, b.reservation_id, r.reservation_number, g.full_name " +
+                     "FROM payments p " +
+                     "JOIN bills b ON p.bill_id = b.id " +
+                     "JOIN reservations r ON b.reservation_id = r.id " +
+                     "JOIN guests g ON r.guest_id = g.id " +
+                     "ORDER BY p.paid_at DESC LIMIT ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    java.util.Map<String, Object> map = new java.util.HashMap<>();
+                    map.put("id", rs.getInt("id"));
+                    map.put("resNo", rs.getString("reservation_number"));
+                    map.put("guestName", rs.getString("full_name"));
+                    map.put("method", rs.getString("payment_method"));
+                    map.put("amount", rs.getBigDecimal("amount_paid"));
+                    map.put("status", rs.getString("payment_status"));
+                    map.put("paidAt", rs.getTimestamp("paid_at"));
                     list.add(map);
                 }
             }

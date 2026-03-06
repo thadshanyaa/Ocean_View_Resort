@@ -6,6 +6,7 @@ public class User {
     private String username;
     private String passwordHash;
     private String role;
+    private String email;
     private boolean isVerified;
     private Timestamp lockedUntil;
     private int failedAttempts;
@@ -14,9 +15,10 @@ public class User {
     // Default Constructor
     public User() {}
 
-    public User(int id, String username, String passwordHash, String role, boolean isVerified) {
+    public User(int id, String username, String email, String passwordHash, String role, boolean isVerified) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
         this.isVerified = isVerified;
@@ -27,6 +29,8 @@ public class User {
     public void setId(int id) { this.id = id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
     public String getRole() { return role; }

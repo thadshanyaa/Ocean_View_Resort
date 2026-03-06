@@ -1,0 +1,30 @@
+<div class="elite-sidebar">
+    <div class="p-4 mb-4">
+        <h4 class="fw-bold text-gold m-0">ELITE PORTAL</h4>
+        <small class="text-white-50">Guest Experience</small>
+    </div>
+    
+    <nav>
+        <a href="elite-guest-portal?view=dashboard" class="elite-nav-link ${view == 'dashboard' ? 'active' : ''}">
+            <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <a href="elite-guest-portal?view=availability" class="elite-nav-link ${view == 'availability' ? 'active' : ''}">
+            <i class="fa-solid fa-calendar-plus"></i> Book Room
+        </a>
+        <a href="elite-guest-portal?view=reservations" class="elite-nav-link ${view == 'reservations' ? 'active' : ''}">
+            <i class="fa-solid fa-suitcase"></i> My Stays
+        </a>
+        <a href="elite-guest-portal?view=billing" class="elite-nav-link ${view == 'billing' ? 'active' : ''}">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Billing
+        </a>
+        <a href="elite-guest-portal?view=profile" class="elite-nav-link ${view == 'profile' ? 'active' : ''}">
+            <i class="fa-solid fa-user-gear"></i> Profile
+        </a>
+    </nav>
+    
+    <div class="position-absolute bottom-0 w-100 p-3 border-top border-secondary border-opacity-25">
+        <a href="logout" class="elite-nav-link text-danger">
+            <i class="fa-solid fa-power-off"></i> Logout
+        </a>
+    </div>
+</div>

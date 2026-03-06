@@ -28,18 +28,24 @@ public class DashboardServlet extends HttpServlet {
             User user = (User) session.getAttribute("user");
 
             if ("Guest".equals(user.getRole())) {
-                // GUEST FLOW
+                // Fetch Guest-specific data
                 GuestDAO guestDAO = new GuestDAO(conn);
                 Guest guest = guestDAO.getByUserId(user.getId());
                 
                 if (guest != null) {
                     request.setAttribute("guest", guest);
-                    request.setAttribute("stats", reservationDAO.getExtendedGuestStats(guest.getId()));
-                    request.setAttribute("reservations", reservationDAO.getReservationsByGuest(guest.getId()));
-                } else {
-                    request.setAttribute("dbError", "Guest profile not found. Please contact support.");
+                    
+                    // Fetch stats
+                    Map<String, Object> guestStats = reservationDAO.getExtendedGuestStats(guest.getId());
+                    request.setAttribute("stats", guestStats);
+                    
+                    // Fetch all reservations for this guest
+                    List<Map<String, Object>> guestReservations = reservationDAO.getReservationsByGuest(guest.getId());
+                    request.setAttribute("reservations", guestReservations);
                 }
+                
                 request.getRequestDispatcher("guestDashboard.jsp").forward(request, response);
+                return;
             } else if ("Manager".equals(user.getRole())) {
                 response.sendRedirect("ManagerDashboardServlet");
             } else if ("Accountant".equals(user.getRole())) {

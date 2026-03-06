@@ -144,6 +144,23 @@ public class RoomDAO implements GenericDAO<Room> {
         return 0;
     }
 
+    public java.util.Map<String, Integer> getRoomStatusOverview() {
+        java.util.Map<String, Integer> stats = new java.util.HashMap<>();
+        String sql = "SELECT " +
+                     " (SELECT COUNT(*) FROM rooms WHERE is_available = TRUE) as available, " +
+                     " (SELECT COUNT(*) FROM rooms WHERE is_available = FALSE) as occupied, " +
+                     " (SELECT COUNT(*) FROM rooms) as total";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                stats.put("available", rs.getInt("available"));
+                stats.put("occupied", rs.getInt("occupied"));
+                stats.put("total", rs.getInt("total"));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return stats;
+    }
+
     public boolean hasFutureBookings(int roomId) {
         String sql = "SELECT COUNT(*) FROM reservations WHERE room_id = ? AND check_out >= CURDATE() AND status != 'CANCELLED'";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

@@ -1,5 +1,9 @@
 package ovr;
 
+/**
+ * Migrated from src/java/ovr/TestRegister.java
+ * Formalized as a manual registration test within the test package.
+ */
 public class TestRegister {
     public static void main(String[] args) {
         try {

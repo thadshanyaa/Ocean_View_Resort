@@ -1,0 +1,94 @@
+:root {
+    --luxury-navy: #0f172a;
+    --luxury-accent: #fbbf24;
+    --luxury-gold: #d97706;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-muted: #94a3b8;
+    --text-bright: #f8fafc;
+}
+
+body.guest-luxury-theme {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+    color: var(--text-bright);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.guest-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* Typography */
+.text-gold {
+    color: var(--luxury-accent);
+}
+
+.font-luxury {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Buttons */
+.btn-luxury {
+    background: linear-gradient(to right, var(--luxury-gold), var(--luxury-accent));
+    border: none;
+    color: var(--luxury-navy);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-luxury:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+    color: var(--luxury-navy);
+}
+
+.btn-outline-gold {
+    background: transparent;
+    border: 1px solid var(--luxury-accent);
+    color: var(--luxury-accent);
+}
+
+.btn-outline-gold:hover {
+    background: var(--luxury-accent);
+    color: var(--luxury-navy);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade {
+    animation: fadeIn 0.6s ease-out forwards;
+}

@@ -1,0 +1,49 @@
+<nav class="guest-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon">
+            <i class="fa-solid fa-hotel"></i>
+        </div>
+        <h4 class="font-luxury fw-bold mb-0 text-gold">OCEAN VIEW</h4>
+        <small class="text-muted text-uppercase" style="letter-spacing: 2px;">Guest Portal</small>
+    </div>
+
+    <ul class="sidebar-nav">
+        <li class="nav-item">
+            <a href="guest-portal?view=dashboard" class="nav-link ${currentView == 'dashboard' ? 'active' : ''}">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="guest-portal?view=reservations" class="nav-link ${currentView == 'reservations' ? 'active' : ''}">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>My Reservations</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="guest-portal?view=room-service" class="nav-link ${currentView == 'room-service' ? 'active' : ''}">
+                <i class="fa-solid fa-bell-concierge"></i>
+                <span>Room Service</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="guest-portal?view=billing" class="nav-link ${currentView == 'billing' ? 'active' : ''}">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>Billing & Payments</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="guest-portal?view=profile" class="nav-link ${currentView == 'profile' ? 'active' : ''}">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>Profile Settings</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-footer">
+        <a href="logout" class="nav-link text-danger">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Sign Out</span>
+        </a>
+    </div>
+</nav>

@@ -160,13 +160,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="gallery.jsp">Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="help.jsp">Support</a></li>
+        <li class="nav-item"><a class="nav-link ${pageContext.request.requestURI.endsWith('index.jsp') ? 'active' : ''}" href="index.jsp">Home</a></li>
+        <li class="nav-item"><a class="nav-link ${pageContext.request.requestURI.endsWith('about.jsp') ? 'active' : ''}" href="about.jsp">About</a></li>
+        <li class="nav-item"><a class="nav-link ${pageContext.request.requestURI.endsWith('gallery.jsp') ? 'active' : ''}" href="gallery.jsp">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link ${pageContext.request.requestURI.endsWith('help.jsp') ? 'active' : ''}" href="help.jsp">Support</a></li>
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
-                <li class="nav-item"><a class="nav-link" href="dashboard.jsp">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link ${pageContext.request.requestURI.contains('Dashboard') || pageContext.request.requestURI.contains('dashboard') ? 'active' : ''}" href="DashboardServlet">Dashboard</a></li>
                 <li class="nav-item d-flex align-items-center ms-3 me-2">
                     <span class="badge border border-warning text-warning bg-dark px-3 py-2" style="letter-spacing: 1px; font-weight: 600;">
                         <i class="fa-solid fa-id-badge me-1"></i> ${sessionScope.user.role}

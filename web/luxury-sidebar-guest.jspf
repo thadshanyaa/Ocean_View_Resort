@@ -1,0 +1,41 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<div class="lux-sidebar px-0 py-4 d-flex flex-column">
+    <div class="px-4 mb-5">
+        <h3 class="brand-font text-gold fw-bold mb-0">OCEAN VIEW</h3>
+        <p class="small text-white-50 letter-spacing-1">LUXURY GUEST PORTAL</p>
+    </div>
+
+    <nav class="flex-grow-1">
+        <a href="luxury-guest-portal?view=dashboard" class="lux-nav-item ${view == 'dashboard' ? 'active' : ''}">
+            <i class="fa-solid fa-house-chimney"></i> Dashboard
+        </a>
+        <a href="luxury-guest-portal?view=reservations" class="lux-nav-item ${view == 'reservations' ? 'active' : ''}">
+            <i class="fa-solid fa-suitcase"></i> My Stays
+        </a>
+        <a href="luxury-guest-portal?view=services" class="lux-nav-item ${view == 'services' ? 'active' : ''}">
+            <i class="fa-solid fa-spa"></i> Resort Services
+        </a>
+        <a href="luxury-guest-portal?view=payments" class="lux-nav-item ${view == 'payments' || view == 'online-pay' || view == 'offline-pay' ? 'active' : ''}">
+            <i class="fa-solid fa-credit-card"></i> Payments
+        </a>
+        <a href="luxury-guest-portal?view=profile" class="lux-nav-item ${view == 'profile' ? 'active' : ''}">
+            <i class="fa-solid fa-user-gear"></i> Profile
+        </a>
+        <hr class="mx-4 border-white opacity-10 my-4">
+        <a href="luxury-guest-portal?view=menu" class="lux-nav-item ${view == 'menu' ? 'active' : ''}">
+            <i class="fa-solid fa-utensils"></i> Restaurant Menu
+        </a>
+    </nav>
+
+    <div class="px-4 mt-auto">
+        <div class="lux-card mb-3 p-3 opacity-75">
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-gold" style="width: 8px; height: 8px;"></div>
+                <small class="text-white-50">Platinum Elite</small>
+            </div>
+        </div>
+        <a href="logout" class="lux-nav-item border-0 m-0 w-100 px-3 text-danger">
+            <i class="fa-solid fa-power-off"></i> Sign Out
+        </a>
+    </div>
+</div>

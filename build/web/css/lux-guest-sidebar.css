@@ -1,0 +1,113 @@
+.lux-sidebar {
+    width: 280px;
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.9);
+    border-right: 1px solid var(--lux-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    padding: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.lux-sidebar-brand {
+    padding: 0 2.5rem 3rem;
+}
+
+.lux-brand-logo {
+    width: 48px;
+    height: 48px;
+    background: var(--lux-gold);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--lux-navy);
+    font-size: 1.4rem;
+    box-shadow: 0 4px 15px var(--lux-glow);
+}
+
+.lux-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.lux-nav-item {
+    padding: 0.4rem 1.5rem;
+}
+
+.lux-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    color: var(--lux-muted);
+    text-decoration: none;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+}
+
+.lux-nav-link i {
+    width: 24px;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.lux-nav-link:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--lux-text);
+}
+
+.lux-nav-link:hover i {
+    transform: translateX(3px);
+    color: var(--lux-gold);
+}
+
+.lux-nav-link.active {
+    background: var(--lux-gold);
+    color: var(--lux-navy);
+    font-weight: 700;
+    box-shadow: 0 4px 20px var(--lux-glow);
+}
+
+.lux-nav-link.active i {
+    color: var(--lux-navy);
+}
+
+.lux-sidebar-footer {
+    padding: 2rem;
+    border-top: 1px solid var(--lux-border);
+}
+
+.lux-main-content {
+    margin-left: 280px;
+    padding: 3rem;
+    width: calc(100% - 280px);
+}
+
+@media (max-width: 1024px) {
+    .lux-sidebar {
+        width: 90px;
+    }
+
+    .lux-sidebar span,
+    .lux-sidebar h5,
+    .lux-sidebar small {
+        display: none;
+    }
+
+    .lux-main-content {
+        margin-left: 90px;
+        width: calc(100% - 90px);
+    }
+
+    .lux-nav-item {
+        padding: 0.4rem 0.8rem;
+    }
+}

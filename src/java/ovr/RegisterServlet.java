@@ -10,6 +10,7 @@ public class RegisterServlet extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userParam = request.getParameter("username");
+        String emailParam = request.getParameter("email");
         String passParam = request.getParameter("password");
         
         String requestedRole = request.getParameter("role");
@@ -50,6 +51,7 @@ public class RegisterServlet extends HttpServlet {
             // Create User Document
             User user = new User();
             user.setUsername(userParam);
+            user.setEmail(emailParam);
             user.setPasswordHash(SecurityUtils.hashPassword(passParam)); // Uses BCrypt now!
             user.setRole(roleParam);
             user.setVerified(false); // MUST verify via OTP on first login

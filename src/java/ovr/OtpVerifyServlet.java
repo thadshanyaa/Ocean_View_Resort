@@ -99,6 +99,8 @@ public class OtpVerifyServlet extends HttpServlet {
                         response.sendRedirect("AccountantDashboardServlet");
                     } else if ("Admin".equals(role)) {
                         response.sendRedirect("AdminPanelServlet?view=dashboard");
+                    } else if ("Guest".equals(role)) {
+                        response.sendRedirect("DashboardServlet");
                     } else {
                         response.sendRedirect("DashboardServlet");
                     }

@@ -1,0 +1,35 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<div class="lux-sidebar px-0 py-4 d-flex flex-column" style="background: #020617; border-right: 1px solid rgba(234, 179, 8, 0.2);">
+    <div class="px-4 mb-5">
+        <h3 class="brand-font text-gold fw-bold mb-0">FRONT OFFICE</h3>
+        <p class="small text-white-50 letter-spacing-1">COMMAND CENTER</p>
+    </div>
+
+    <nav class="flex-grow-1">
+        <a href="front-office-portal?view=dashboard" class="lux-nav-item ${view == 'dashboard' ? 'active' : ''}">
+            <i class="fa-solid fa-gauge-high"></i> Overview
+        </a>
+        <a href="front-office-portal?view=reservations" class="lux-nav-item ${view == 'reservations' ? 'active' : ''}">
+            <i class="fa-solid fa-calendar-check"></i> Reservations
+        </a>
+        <a href="front-office-portal?view=operations" class="lux-nav-item ${view == 'operations' ? 'active' : ''}">
+            <i class="fa-solid fa-door-open"></i> Check-In / Out
+        </a>
+        <a href="front-office-portal?view=requests" class="lux-nav-item ${view == 'requests' ? 'active' : ''}">
+            <i class="fa-solid fa-bell-concierge"></i> Guest Requests
+        </a>
+        <a href="front-office-portal?view=billing" class="lux-nav-item ${view == 'billing' ? 'active' : ''}">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Billing & Ledger
+        </a>
+    </nav>
+
+    <div class="px-4 mt-auto">
+        <div class="lux-card mb-3 p-3 bg-white bg-opacity-5">
+            <div class="small text-white-50">Active Station</div>
+            <div class="fw-bold text-gold">Lobby Terminal 01</div>
+        </div>
+        <a href="logout" class="lux-nav-item border-0 m-0 w-100 px-3 text-danger">
+            <i class="fa-solid fa-power-off"></i> Sign Out
+        </a>
+    </div>
+</div>

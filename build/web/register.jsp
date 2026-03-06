@@ -61,6 +61,20 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-6 mb-2">
+                                                    <label
+                                                        class="form-label text-light small fw-bold tracking-wider">EMAIL
+                                                        ADDRESS</label>
+                                                    <div class="input-group">
+                                                        <span
+                                                            class="input-group-text bg-dark border-secondary text-info"><i
+                                                                class="fa-solid fa-envelope"></i></span>
+                                                        <input type="email" name="email"
+                                                            class="form-control bg-dark border-secondary text-white"
+                                                            required placeholder="Enter your email">
+                                                    </div>
+                                                </div>
+
                                                 <!-- Password Output & Requirements -->
                                                 <div class="col-md-6 mb-2">
                                                     <label
@@ -90,7 +104,8 @@
                                                             Security Requirements:</h6>
                                                         <div class="row g-1 text-muted" style="font-size: 0.75rem;">
                                                             <div class="col-6" id="rule-len"><i
-                                                                    class="fa-solid fa-xmark text-danger me-1"></i> 8+
+                                                                    class="fa-solid fa-xmark text-danger me-1"></i>
+                                                                8+
                                                                 Characters</div>
                                                             <div class="col-6" id="rule-up"><i
                                                                     class="fa-solid fa-xmark text-danger me-1"></i>

@@ -3,6 +3,10 @@ package ovr;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Migrated from src/java/ovr/DBTestConsole.java
+ * Formalized as a manual test console within the test package.
+ */
 public class DBTestConsole {
     public static void main(String[] args) {
         String resNum = "OVR-20260303-9497";
@@ -43,7 +47,7 @@ public class DBTestConsole {
             List<Payment> payments = paymentDao.getByBillId(bill.getId());
             System.out.println("6/6: Payments OK. Count=" + payments.size());
             
-            System.out.println("ALL OK. If it fails in Tomcat, it's NOT these getters returning NULL.");
+            System.out.println("ALL OK. Sanity test passed.");
         } catch (Exception e) {
             System.out.println("EXCEPTION CAUGHT!");
             e.printStackTrace();

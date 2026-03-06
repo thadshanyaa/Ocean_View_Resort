@@ -1,0 +1,82 @@
+/* accountant_dashboard.css */
+:root {
+    --finance-bg: #f8fafc;
+    --finance-card: #ffffff;
+    --finance-primary: #0f172a;
+    --finance-accent: #0ea5e9;
+    --finance-border: #e2e8f0;
+    --finance-text: #1e293b;
+    --finance-text-muted: #64748b;
+}
+
+body.accountant-theme {
+    background-color: var(--finance-bg);
+    color: var(--finance-text);
+    font-family: 'Inter', sans-serif;
+}
+
+.finance-card {
+    background: var(--finance-card);
+    border: 1px solid var(--finance-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.finance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.finance-header {
+    border-bottom: 2px solid var(--finance-accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-finance {
+    background: var(--finance-primary);
+    color: #fff;
+    min-height: 100vh;
+}
+
+.nav-link-finance {
+    color: #94a3b8;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-link-finance:hover, .nav-link-finance.active {
+    background: rgba(14, 165, 233, 0.1);
+    color: #fff;
+    border-left-color: var(--finance-accent);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.status-paid { background: #10b981; }
+.status-pending { background: #f59e0b; }
+.status-failed { background: #ef4444; }
+
+.finance-table thead {
+    background: #f1f5f9;
+}
+
+.finance-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--finance-text-muted);
+}

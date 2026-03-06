@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --lux-navy: #020617;
+    --lux-dark: #0f172a;
+    --lux-gold: #eab308;
+    --lux-gold-dim: rgba(234, 179, 8, 0.15);
+    --lux-gold-glow: 0 0 20px rgba(234, 179, 8, 0.3);
+    --lux-cyan: #06b6d4;
+    --lux-glass: rgba(15, 23, 42, 0.7);
+    --lux-text: #f8fafc;
+    --lux-text-dim: #94a3b8;
+    --lux-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--lux-navy);
+    color: var(--lux-text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.brand-font {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Background Effects */
+.lux-bg-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.05) 0%, transparent 70%);
+    filter: blur(60px);
+    z-index: -1;
+    border-radius: 50%;
+}
+
+/* Glass Components */
+.lux-card {
+    background: var(--lux-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--lux-border);
+    border-radius: 24px;
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lux-card:hover {
+    border-color: var(--lux-gold);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
+}
+
+/* Premium Sidebar */
+.lux-sidebar {
+    width: 280px;
+    height: 100vh;
+    background: var(--lux-dark);
+    border-right: 1px solid var(--lux-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.lux-nav-item {
+    padding: 14px 24px;
+    margin: 4px 16px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    color: var(--lux-text-dim);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.lux-nav-item i {
+    width: 24px;
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+.lux-nav-item:hover,
+.lux-nav-item.active {
+    background: var(--lux-gold);
+    color: var(--lux-navy);
+    font-weight: 600;
+    box-shadow: 0 10px 20px -5px rgba(234, 179, 8, 0.4);
+}
+
+.lux-nav-item.active i {
+    color: var(--lux-navy);
+}
+
+/* Main Content Area */
+.lux-main {
+    margin-left: 280px;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* Typography & Buttons */
+.text-gold {
+    color: var(--lux-gold);
+}
+
+.text-cyan {
+    color: var(--lux-cyan);
+}
+
+.lux-btn {
+    padding: 12px 28px;
+    border-radius: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lux-btn-gold {
+    background: var(--lux-gold);
+    color: var(--lux-navy);
+}
+
+.lux-btn-gold:hover {
+    box-shadow: var(--lux-gold-glow);
+    filter: brightness(1.1);
+}
+
+.lux-btn-outline {
+    background: transparent;
+    border: 1px solid var(--lux-gold);
+    color: var(--lux-gold);
+}
+
+.lux-btn-outline:hover {
+    background: var(--lux-gold);
+    color: var(--lux-navy);
+}
+
+/* Tables */
+.lux-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.lux-table tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+}
+
+.lux-table td,
+.lux-table th {
+    padding: 16px;
+    vertical-align: middle;
+}
+
+.lux-table th {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: var(--lux-text-dim);
+    border-bottom: 0px;
+}
+
+.lux-table td:first-child {
+    border-radius: 16px 0 0 16px;
+}
+
+.lux-table td:last-child {
+    border-radius: 0 16px 16px 0;
+}
+
+/* Status Badges */
+.lux-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.lux-badge-pending {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--lux-gold);
+}
+
+.lux-badge-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.lux-badge-info {
+    background: rgba(6, 182, 212, 0.1);
+    color: var(--lux-cyan);
+}
+
+@media (max-width: 992px) {
+    .lux-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .lux-main {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,21 @@
+<div class="elite-sidebar" style="background: #020617; border-right: 1px solid rgba(234, 179, 8, 0.2);">
+    <div class="p-4 mb-4">
+        <h4 class="fw-bold text-gold m-0">ELITE MONITOR</h4>
+        <small class="text-white-50">${user.role} Control</small>
+    </div>
+    
+    <nav>
+        <div class="px-4 mb-2 small text-uppercase text-gold opacity-50 fw-bold" style="letter-spacing: 1px;">Operations</div>
+        <a href="elite-staff-view" class="elite-nav-link active">
+            <i class="fa-solid fa-list-check"></i> Elite Bookings
+        </a>
+        <a href="DashboardServlet" class="elite-nav-link">
+            <i class="fa-solid fa-arrow-left"></i> Main Dashboard
+        </a>
+    </nav>
+    
+    <div class="position-absolute bottom-0 w-100 p-3 border-top border-secondary border-opacity-25">
+        <div class="px-3 mb-2 small text-white-50">Logged in as:</div>
+        <div class="px-3 fw-bold text-gold small">${user.username}</div>
+    </div>
+</div>

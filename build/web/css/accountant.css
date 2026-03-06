@@ -1,0 +1,94 @@
+/* Accountant Dashboard Specific Styles */
+:root {
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-info: #0ea5e9;
+    --accent-primary: #6366f1;
+}
+
+.accountant-container {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* Compact Stats & Mini Dashboard */
+.stat-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-accent);
+}
+
+.stat-card i {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 4rem;
+    opacity: 0.05;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.stat-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Charts & Main UI */
+.chart-container {
+    height: 300px;
+    width: 100%;
+}
+
+.table-glass {
+    --bs-table-bg: transparent;
+    --bs-table-color: #e2e8f0;
+    --bs-table-border-color: rgba(255,255,255,0.05);
+}
+
+.table-glass.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Status Badges */
+.badge-status {
+    padding: 0.4em 0.8em;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.bg-paid { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.bg-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+/* Sidebar Active States */
+.sidebar-link.active {
+    background: linear-gradient(90deg, var(--neon-accent) 0%, transparent 100%);
+    border-left: 3px solid var(--neon-accent);
+    color: #fff !important;
+    padding-left: 1.5rem !important;
+}

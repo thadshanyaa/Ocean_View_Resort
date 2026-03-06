@@ -1,0 +1,49 @@
+<nav class="lux-sidebar">
+    <div class="lux-sidebar-brand text-center">
+        <div class="lux-brand-logo mx-auto">
+            <i class="fa-solid fa-water"></i>
+        </div>
+        <h5 class="font-heading fw-bold mb-0 text-gold">OCEAN VIEW</h5>
+        <small class="text-white-50 text-uppercase" style="letter-spacing: 3px; font-size: 0.6rem;">Elite Guest Club</small>
+    </div>
+
+    <ul class="lux-nav">
+        <li class="lux-nav-item">
+            <a href="luxury-guest-portal?view=dashboard" class="lux-nav-link ${currentView == 'dashboard' ? 'active' : ''}">
+                <i class="fa-solid fa-grip"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="lux-nav-item">
+            <a href="luxury-guest-portal?view=reservations" class="lux-nav-link ${currentView == 'reservations' ? 'active' : ''}">
+                <i class="fa-solid fa-suitcase"></i>
+                <span>My Reservations</span>
+            </a>
+        </li>
+        <li class="lux-nav-item">
+            <a href="luxury-guest-portal?view=availability" class="lux-nav-link ${currentView == 'availability' ? 'active' : ''}">
+                <i class="fa-solid fa-magnifying-glass-location"></i>
+                <span>Room Availability</span>
+            </a>
+        </li>
+        <li class="lux-nav-item">
+            <a href="luxury-guest-portal?view=billing" class="lux-nav-link ${currentView == 'billing' ? 'active' : ''}">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Billing & Payments</span>
+            </a>
+        </li>
+        <li class="lux-nav-item">
+            <a href="luxury-guest-portal?view=profile" class="lux-nav-link ${currentView == 'profile' ? 'active' : ''}">
+                <i class="fa-solid fa-crown"></i>
+                <span>Profile Settings</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="lux-sidebar-footer">
+        <a href="logout" class="lux-nav-link text-danger">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Sign Out</span>
+        </a>
+    </div>
+</nav>
