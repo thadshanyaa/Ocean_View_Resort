@@ -89,17 +89,13 @@ public class PaymentDAO {
     }
 
     public List<Payment> getByBillId(int billId) throws SQLException {
-        // Ensure table has paid_at column if not exists
-        try (PreparedStatement check = conn.prepareStatement("ALTER TABLE payments ADD COLUMN IF NOT EXISTS paid_at TIMESTAMP NULL")) {
-            check.execute();
-        } catch(SQLException ignored) {}
-        
+        ensurePaidAtColumn();
         List<Payment> list = new ArrayList<>();
         String sql = "SELECT * FROM payments WHERE bill_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, billId);
-            try(ResultSet rs = stmt.executeQuery()) {
-                while(rs.next()) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
                     Payment p = new Payment();
                     p.setId(rs.getInt("id"));
                     p.setBillId(billId);
@@ -107,34 +103,39 @@ public class PaymentDAO {
                     p.setTransactionRef(rs.getString("transaction_ref"));
                     p.setAmountPaid(rs.getBigDecimal("amount_paid"));
                     p.setPaymentStatus(rs.getString("payment_status"));
-                    
-                    try {
-                        p.setPaidAt(rs.getTimestamp("paid_at"));
-                    } catch (SQLException ignored) {} // Just in case column still doesn't exist
-                    
+                    p.setPaidAt(rs.getTimestamp("paid_at"));
                     list.add(p);
                 }
             }
         } catch (SQLException e) {
-             if(e.getMessage().toLowerCase().contains("doesn't exist")) return list;
-             throw e;
+            if (e.getMessage().toLowerCase().contains("doesn't exist")) return list;
+            throw e;
         }
         return list;
+    }
+
+    private void ensurePaidAtColumn() {
+        try (PreparedStatement check = conn.prepareStatement("ALTER TABLE payments ADD COLUMN IF NOT EXISTS paid_at TIMESTAMP NULL")) {
+            check.execute();
+        } catch (SQLException ignored) {
+        }
+    }
+
     public java.util.Map<String, Object> getAccountantKPIs() throws SQLException {
         java.util.Map<String, Object> stats = new java.util.HashMap<>();
-        
+
         String sql = "SELECT " +
-                     " (SELECT SUM(amount_paid) FROM payments WHERE DATE(paid_at) = CURDATE() AND payment_status='PAID') as today_revenue, " +
-                     " (SELECT COUNT(*) FROM reservations WHERE status='Pending' OR id IN (SELECT reservation_id FROM bills b LEFT JOIN payments p ON b.id=p.bill_id GROUP BY b.id HAVING SUM(IFNULL(p.amount_paid,0)) < (SELECT total_amount FROM bills WHERE id=b.id))) as pending_count, " +
-                     " (SELECT SUM(amount_paid) FROM payments WHERE payment_status='PAID') as total_revenue, " +
+                     " (SELECT IFNULL(SUM(amount_paid), 0) FROM payments WHERE DATE(paid_at) = CURDATE() AND payment_status='PAID') as today_revenue, " +
+                     " (SELECT COUNT(*) FROM reservations WHERE status='Pending' OR id IN (SELECT reservation_id FROM bills b LEFT JOIN payments p ON b.id=p.bill_id GROUP BY b.id HAVING SUM(IFNULL(p.amount_paid,0)) < b.total_amount)) as pending_count, " +
+                     " (SELECT IFNULL(SUM(amount_paid), 0) FROM payments WHERE payment_status='PAID') as total_revenue, " +
                      " (SELECT COUNT(*) FROM bills) as total_invoices";
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
-                stats.put("todayRevenue", rs.getBigDecimal("today_revenue") != null ? rs.getBigDecimal("today_revenue") : BigDecimal.ZERO);
+                stats.put("todayRevenue", rs.getBigDecimal("today_revenue"));
                 stats.put("pendingCount", rs.getInt("pending_count"));
-                stats.put("totalRevenue", rs.getBigDecimal("total_revenue") != null ? rs.getBigDecimal("total_revenue") : BigDecimal.ZERO);
+                stats.put("totalRevenue", rs.getBigDecimal("total_revenue"));
                 stats.put("totalInvoices", rs.getInt("total_invoices"));
             }
         }
@@ -151,16 +152,16 @@ public class PaymentDAO {
             "JOIN guests g ON r.guest_id = g.id " +
             "WHERE 1=1 "
         );
-        
+
         List<Object> params = new ArrayList<>();
         if (start != null && !start.isEmpty()) { sql.append("AND DATE(p.paid_at) >= ? "); params.add(start); }
         if (end != null && !end.isEmpty()) { sql.append("AND DATE(p.paid_at) <= ? "); params.add(end); }
         if (method != null && !method.isEmpty()) { sql.append("AND p.payment_method = ? "); params.add(method); }
         if (status != null && !status.isEmpty()) { sql.append("AND p.payment_status = ? "); params.add(status); }
         if (resNo != null && !resNo.isEmpty()) { sql.append("AND r.reservation_number LIKE ? "); params.add("%" + resNo + "%"); }
-        
+
         sql.append("ORDER BY p.paid_at DESC");
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) stmt.setObject(i + 1, params.get(i));
             try (ResultSet rs = stmt.executeQuery()) {
