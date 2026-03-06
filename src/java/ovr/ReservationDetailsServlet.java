@@ -214,26 +214,23 @@ public class ReservationDetailsServlet extends HttpServlet {
                 p.setPaymentStatus("PAID");
                 p.setPaidAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
-                if ("ONLINE".equals(method)) {
+                if ("ONLINE".equals(method) || "BANK_TRANSFER".equals(method)) {
                     String payerName = request.getParameter("payerName");
                     String ref = request.getParameter("transactionRef");
                     
                     if (payerName == null || payerName.trim().isEmpty()) {
-                        throw new Exception("Payer Name is required for Online payment.");
+                        throw new Exception("Payer Name is required for " + method + ".");
                     }
-                    if (ref == null || ref.trim().isEmpty()) {
-                        throw new Exception("Reference Number is required for Online payment.");
+                    if (ref == null || !ref.matches("\\d{8}")) {
+                        throw new Exception("A valid 8-digit Reference Number is required.");
                     }
                     
-                    p.setPaymentMethod("ONLINE (" + payerName + ")");
+                    p.setPaymentMethod(method + " (" + payerName + ")");
                     p.setTransactionRef(ref);
                 } else {
-                    // OFFLINE logic: auto-generated from frontend or default logic
-                    String ref = request.getParameter("transactionRef");
-                    if (ref == null || ref.trim().isEmpty()) {
-                        ref = "TXN-OFFLINE-" + System.currentTimeMillis();
-                    }
-                    p.setPaymentMethod("OFFLINE (CASH)");
+                    // CASH logic
+                    p.setPaymentMethod("CASH (Reception)");
+                    String ref = "CASH-" + System.currentTimeMillis() / 1000;
                     p.setTransactionRef(ref);
                 }
 

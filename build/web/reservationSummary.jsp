@@ -5,22 +5,24 @@
 
                 <style>
                     :root {
-                        --summary-bg: rgba(10, 25, 47, 0.85);
-                        --accent-primary: #64ffda;
-                        --accent-secondary: #0ea5e9;
+                        --summary-bg: #050a14;
+                        --card-bg: rgba(16, 32, 58, 0.75);
+                        --accent-glow: #64ffda;
+                        --text-bright: #e6f1ff;
+                        --text-dim: #8892b0;
                     }
 
-                    .summary-page {
+                    .summary-wrapper {
                         min-height: 80vh;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background: radial-gradient(circle at center, #0a192f 0%, #020c1b 100%);
                         padding: 40px 20px;
+                        background: radial-gradient(circle at center, #0a192f 0%, #020c1b 100%);
                     }
 
-                    .summary-card {
-                        background: var(--summary-bg);
+                    .glass-summary-card {
+                        background: var(--card-bg);
                         backdrop-filter: blur(20px);
                         -webkit-backdrop-filter: blur(20px);
                         border: 1px solid rgba(100, 255, 218, 0.1);
@@ -29,7 +31,6 @@
                         width: 100%;
                         max-width: 600px;
                         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-                        text-align: center;
                         animation: fadeInUp 0.6s ease-out;
                     }
 
@@ -45,204 +46,168 @@
                         }
                     }
 
-                    .success-icon {
-                        width: 80px;
-                        height: 80px;
-                        background: rgba(100, 255, 218, 0.1);
-                        color: var(--accent-primary);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 2.5rem;
-                        margin: 0 auto 30px auto;
-                        box-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
+                    .summary-header {
+                        text-align: center;
+                        margin-bottom: 40px;
                     }
 
-                    .booking-ref {
-                        display: inline-block;
-                        background: rgba(14, 165, 233, 0.1);
-                        color: var(--accent-secondary);
-                        padding: 5px 15px;
-                        border-radius: 50px;
-                        font-weight: 700;
-                        font-size: 0.85rem;
-                        margin-bottom: 20px;
-                        letter-spacing: 1px;
+                    .summary-header i {
+                        font-size: 3rem;
+                        color: var(--accent-glow);
+                        margin-bottom: 15px;
+                        filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.3));
                     }
 
-                    .stay-details {
+                    .summary-header h2 {
+                        color: var(--text-bright);
+                        font-weight: 800;
+                        letter-spacing: -0.5px;
+                    }
+
+                    .detail-grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 20px;
+                        margin-bottom: 40px;
                         background: rgba(0, 0, 0, 0.2);
+                        padding: 30px;
                         border-radius: 20px;
-                        padding: 25px;
-                        margin: 30px 0;
-                        text-align: left;
-                    }
-
-                    .detail-row {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 12px;
-                    }
-
-                    .detail-row:last-child {
-                        margin-bottom: 0;
+                        border: 1px solid rgba(255, 255, 255, 0.05);
                     }
 
                     .detail-label {
-                        color: #8892b0;
-                        font-size: 0.9rem;
+                        color: var(--text-dim);
+                        font-weight: 600;
+                        font-size: 0.85rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    .detail-label i {
+                        font-size: 1rem;
+                        color: var(--accent-glow);
                     }
 
                     .detail-value {
-                        color: #e6f1ff;
-                        font-weight: 600;
-                    }
-
-                    .grand-total-box {
-                        border-top: 1px solid rgba(255, 255, 255, 0.05);
-                        padding-top: 20px;
-                        margin-top: 20px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: baseline;
-                    }
-
-                    .total-label {
-                        color: var(--accent-primary);
+                        color: var(--text-bright);
                         font-weight: 700;
-                        font-size: 1.1rem;
+                        text-align: right;
+                        font-size: 1.05rem;
                     }
 
-                    .total-amount {
-                        color: #fff;
-                        font-size: 1.8rem;
+                    .badge-status {
+                        padding: 4px 12px;
+                        border-radius: 50px;
+                        font-size: 0.75rem;
                         font-weight: 800;
                     }
 
-                    .action-group {
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 15px;
-                        margin-top: 40px;
+                    .badge-paid {
+                        background: rgba(16, 185, 129, 0.1);
+                        color: #10b981;
+                        border: 1px solid rgba(16, 185, 129, 0.2);
                     }
 
-                    .btn-summary {
-                        padding: 14px;
-                        border-radius: 12px;
-                        font-weight: 600;
-                        transition: all 0.3s;
+                    .badge-pending {
+                        background: rgba(245, 158, 11, 0.1);
+                        color: #f59e0b;
+                        border: 1px solid rgba(245, 158, 11, 0.2);
+                    }
+
+                    .btn-dashboard {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        background: var(--accent-glow);
+                        color: #050a14;
+                        padding: 16px;
+                        border-radius: 15px;
+                        font-weight: 700;
                         text-decoration: none;
-                        display: block;
-                    }
-
-                    .btn-main {
-                        background: var(--accent-primary);
-                        color: #0a192f;
+                        transition: all 0.3s;
                         box-shadow: 0 10px 20px rgba(100, 255, 218, 0.2);
                     }
 
-                    .btn-main:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 15px 30px rgba(100, 255, 218, 0.3);
+                    .btn-dashboard:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 15px 30px rgba(100, 255, 218, 0.4);
                         background: #4deacf;
+                        color: #050a14;
                     }
 
-                    .btn-outline {
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        color: #ccd6f6;
-                    }
-
-                    .btn-outline:hover {
-                        background: rgba(255, 255, 255, 0.05);
-                        color: var(--accent-primary);
-                        border-color: var(--accent-primary);
-                    }
-
-                    .status-alert {
-                        padding: 10px;
-                        border-radius: 10px;
-                        font-size: 0.85rem;
-                        margin-bottom: 25px;
-                        display: inline-flex;
+                    .total-highlight {
+                        grid-column: span 2;
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        margin-top: 10px;
+                        padding-top: 20px;
+                        display: flex;
+                        justify-content: space-between;
                         align-items: center;
-                        gap: 8px;
                     }
 
-                    .alert-paid {
-                        background: rgba(16, 185, 129, 0.1);
-                        color: #10b981;
+                    .total-label {
+                        color: var(--accent-glow);
+                        font-size: 1rem;
+                        font-weight: 800;
                     }
 
-                    .alert-pending {
-                        background: rgba(245, 158, 11, 0.1);
-                        color: #f59e0b;
+                    .total-value {
+                        color: #fff;
+                        font-size: 1.5rem;
+                        font-weight: 800;
                     }
                 </style>
 
-                <div class="summary-page">
-                    <div class="summary-card">
-                        <div class="success-icon">
+                <div class="summary-wrapper">
+                    <div class="glass-summary-card">
+                        <div class="summary-header">
                             <i class="fa-solid fa-hotel"></i>
+                            <h2>Reservation Details</h2>
+                            <p class="text-white-50">Quick overview of your booking</p>
                         </div>
 
-                        <h2 class="text-white fw-bold mb-2">Reservation Summary</h2>
-                        <div class="booking-ref">CONFIRMATION: ${res.reservationNumber}</div>
+                        <div class="detail-grid">
+                            <div class="detail-label"><i class="fa-solid fa-hashtag"></i> ID</div>
+                            <div class="detail-value">${res.reservationNumber}</div>
 
-                        <div class="d-block">
-                            <c:choose>
-                                <c:when test="${paymentStatus == 'PAID'}">
-                                    <div class="status-alert alert-paid">
-                                        <i class="fa-solid fa-circle-check"></i> FULLY SETTLED
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="status-alert alert-pending">
-                                        <i class="fa-solid fa-clock"></i> PAYMENT PENDING
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                            <div class="detail-label"><i class="fa-solid fa-user"></i> Guest</div>
+                            <div class="detail-value">${guest.fullName}</div>
 
-                        <div class="stay-details">
-                            <div class="detail-row">
-                                <span class="detail-label">Guest</span>
-                                <span class="detail-value">${guest.fullName}</span>
+                            <div class="detail-label"><i class="fa-solid fa-calendar"></i> Check-in</div>
+                            <div class="detail-value">
+                                <fmt:formatDate value="${res.checkIn}" pattern="dd MMM yyyy" />
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Room</span>
-                                <span class="detail-value">${room.roomNumber} (${roomType.typeName})</span>
+
+                            <div class="detail-label"><i class="fa-solid fa-calendar"></i> Check-out</div>
+                            <div class="detail-value">
+                                <fmt:formatDate value="${res.checkOut}" pattern="dd MMM yyyy" />
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Duration</span>
-                                <span class="detail-value">
-                                    <fmt:formatDate value="${res.checkIn}" pattern="dd MMM" /> -
-                                    <fmt:formatDate value="${res.checkOut}" pattern="dd MMM yyyy" />
+
+                            <div class="detail-label"><i class="fa-solid fa-bed"></i> Room</div>
+                            <div class="detail-value">${room.roomNumber} (${roomType.typeName})</div>
+
+                            <div class="detail-label"><i class="fa-solid fa-shield-halved"></i> Status</div>
+                            <div class="detail-value">
+                                <span class="badge-status ${paymentStatus == 'PAID' ? 'badge-paid' : 'badge-pending'}">
+                                    ${paymentStatus}
                                 </span>
                             </div>
 
-                            <div class="grand-total-box">
-                                <span class="total-label">Subtotal</span>
-                                <span class="total-amount">LKR
-                                    <fmt:formatNumber value="${grandTotal}" type="number" />
+                            <div class="total-highlight">
+                                <span class="total-label">Total Due</span>
+                                <span class="total-value">LKR
+                                    <fmt:formatNumber value="${amountDue}" type="number" minFractionDigits="2" />
                                 </span>
                             </div>
                         </div>
 
-                        <p class="text-muted small">
-                            Thank you for choosing OceanView Resort. You can view your full itinerary and manage
-                            services in your dashboard.
-                        </p>
-
-                        <div class="action-group">
-                            <a href="ReservationDetailsServlet?reservationNumber=${res.reservationNumber}"
-                                class="btn-summary btn-outline">
-                                <i class="fa-solid fa-list-ul me-2"></i> Itinerary
-                            </a>
-                            <a href="DashboardServlet" class="btn-summary btn-main">
-                                <i class="fa-solid fa-house me-2"></i> Dashboard
-                            </a>
-                        </div>
+                        <a href="DashboardServlet" class="btn-dashboard">
+                            <i class="fa-solid fa-house"></i> Return to Dashboard
+                        </a>
                     </div>
                 </div>
 

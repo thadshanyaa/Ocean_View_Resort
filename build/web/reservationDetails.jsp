@@ -160,6 +160,19 @@
 
         <div class="itinerary-wrapper">
           <div class="container">
+            <c:if test="${param.msg == 'PAYMENT_SUCCESS'}">
+              <div
+                class="alert alert-success bg-success bg-opacity-10 border-success text-success mb-4 p-4 rounded-4 shadow-sm animate__animated animate__fadeInDown">
+                <div class="d-flex align-items-center">
+                  <i class="fa-solid fa-circle-check fs-3 me-3"></i>
+                  <div>
+                    <h5 class="fw-bold mb-1">Payment Successfully Recorded!</h5>
+                    <p class="small mb-0 opacity-75">The transaction has been verified and the reservation is now fully
+                      settled. Official receipt is available for download.</p>
+                  </div>
+                </div>
+              </div>
+            </c:if>
             <!-- Error Handling -->
             <c:if test="${not empty errorMessage}">
               <div
@@ -290,12 +303,79 @@
                         <fmt:formatNumber value="${amountDue}" type="number" minFractionDigits="0" />
                       </span>
                     </div>
-                    <c:if test="${amountDue > 0}">
-                      <button class="btn btn-premium btn-glow w-100 mt-4"
-                        onclick="bootstrap.Modal.getOrCreateInstance('#paymentModal').show()">
-                        <i class="fa-solid fa-credit-card me-2"></i> Settle Balance
-                      </button>
-                    </c:if>
+
+                    <c:choose>
+                      <c:when test="${amountDue > 0}">
+                        <c:choose>
+                          <c:when test="${user.role == 'Receptionist'}">
+                            <!-- Receptionist Manual Payment Panel -->
+                            <div class="mt-4 p-4 rounded-4"
+                              style="background: rgba(100, 255, 218, 0.05); border: 1px dashed var(--accent-glow);">
+                              <h6 class="text-white fw-bold mb-3"><i
+                                  class="fa-solid fa-cash-register me-2 text-info"></i> Manual Payment Confirmation</h6>
+
+                              <form id="receptionistPaymentForm">
+                                <input type="hidden" name="actionType" value="payBill" />
+                                <input type="hidden" name="billId" value="${bill.id}" />
+                                <input type="hidden" name="amountPaid" value="${amountDue}" />
+
+                                <div class="mb-3">
+                                  <label class="data-label mb-2">Payment Method</label>
+                                  <select class="form-control form-control-premium" name="paymentMethod"
+                                    id="manualPayMethod" required>
+                                    <option value="CASH">Cash (Front Desk)</option>
+                                    <option value="ONLINE">Online</option>
+                                    <option value="BANK_TRANSFER">Bank Transfer</option>
+                                  </select>
+                                </div>
+
+                                <div id="manualExtraFields" style="display: none;">
+                                  <div class="mb-3">
+                                    <label class="data-label mb-2">Payer Name</label>
+                                    <input type="text" class="form-control form-control-premium" name="payerName"
+                                      id="manualPayerName" placeholder="Name from Statement">
+                                  </div>
+                                  <div class="mb-3">
+                                    <label class="data-label mb-2">Reference Number (8 Digits)</label>
+                                    <input type="text" class="form-control form-control-premium" name="transactionRef"
+                                      id="manualRef" maxlength="8" placeholder="e.g. 12345678">
+                                    <div id="refError" class="x-small text-danger mt-1" style="display: none;">Must be
+                                      exactly 8 digits (numbers only).</div>
+                                  </div>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                  <input class="form-check-input" type="checkbox" id="confirmCheckbox" required>
+                                  <label class="form-check-label small text-white-50" for="confirmCheckbox">
+                                    I confirm that the full payment has been received
+                                  </label>
+                                </div>
+
+                                <button type="submit" id="confirmPayBtn" class="btn btn-premium btn-glow w-100"
+                                  disabled>
+                                  <i class="fa-solid fa-check-circle me-2"></i> Confirm Payment
+                                </button>
+                              </form>
+                            </div>
+                          </c:when>
+                          <c:otherwise>
+                            <!-- Guest Payment Button -->
+                            <button class="btn btn-premium btn-glow w-100 mt-4"
+                              onclick="bootstrap.Modal.getOrCreateInstance('#paymentModal').show()">
+                              <i class="fa-solid fa-credit-card me-2"></i> Settle Balance
+                            </button>
+                          </c:otherwise>
+                        </c:choose>
+                      </c:when>
+                      <c:otherwise>
+                        <div
+                          class="mt-4 p-3 rounded-4 bg-success bg-opacity-10 border border-success border-opacity-25 text-center">
+                          <i class="fa-solid fa-circle-check text-success fa-2x mb-2"></i>
+                          <div class="fw-bold text-success">Payment Received</div>
+                          <div class="small text-white-50">Transaction fully verified and settled.</div>
+                        </div>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
 
                   <div class="d-flex gap-3 mt-4">
@@ -449,16 +529,87 @@
 
           document.getElementById("addServiceForm")?.addEventListener("submit", handleForm);
           document.getElementById("paymentForm")?.addEventListener("submit", handleForm);
+          document.getElementById("receptionistPaymentForm")?.addEventListener("submit", handleForm);
+
+          // Receptionist Manual Payment Logic
+          const manualPayMethod = document.getElementById("manualPayMethod");
+          const manualExtraFields = document.getElementById("manualExtraFields");
+          const manualRef = document.getElementById("manualRef");
+          const refError = document.getElementById("refError");
+          const confirmCheckbox = document.getElementById("confirmCheckbox");
+          const confirmPayBtn = document.getElementById("confirmPayBtn");
+
+          function validateReceptionistForm() {
+            const method = manualPayMethod.value;
+            const isChecked = confirmCheckbox.checked;
+            let isValid = isChecked;
+
+            if (method === "ONLINE" || method === "BANK_TRANSFER") {
+              const refValue = manualRef.value;
+              const isRefValid = /^\d{8}$/.test(refValue);
+              const isPayerValid = document.getElementById("manualPayerName").value.trim().length > 0;
+
+              if (refValue.length > 0 && !isRefValid) {
+                refError.style.display = "block";
+              } else {
+                refError.style.display = "none";
+              }
+
+              isValid = isChecked && isRefValid && isPayerValid;
+            } else {
+              refError.style.display = "none";
+            }
+
+            confirmPayBtn.disabled = !isValid;
+          }
+
+          manualPayMethod?.addEventListener("change", function () {
+            if (this.value === "ONLINE" || this.value === "BANK_TRANSFER") {
+              manualExtraFields.style.display = "block";
+              document.getElementById("manualPayerName").required = true;
+              manualRef.required = true;
+            } else {
+              manualExtraFields.style.display = "none";
+              document.getElementById("manualPayerName").required = false;
+              manualRef.required = false;
+            }
+            validateReceptionistForm();
+          });
+
+          document.getElementById("manualPayerName")?.addEventListener("input", validateReceptionistForm);
+          manualRef?.addEventListener("input", validateReceptionistForm);
+          confirmCheckbox?.addEventListener("change", validateReceptionistForm);
 
           function handleForm(e) {
             e.preventDefault();
             const fd = new FormData(this);
             const params = new URLSearchParams(Array.from(fd.entries())).toString();
-            fetch("ReservationDetailsServlet", {
+
+            // Determine target servlet
+            const isManual = this.id === 'receptionistPaymentForm';
+            const targetServlet = isManual ? "PaymentConfirmServlet" : "ReservationDetailsServlet";
+
+            // Show loading state
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...';
+
+            fetch(targetServlet, {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: params
-            }).then(() => window.location.reload());
+            }).then(response => {
+              if (response.ok) {
+                window.location.href = window.location.pathname + "?reservationNumber=${res.reservationNumber}&msg=PAYMENT_SUCCESS";
+              } else {
+                return response.text().then(text => { throw new Error(text) });
+              }
+            }).catch(err => {
+              alert("Error: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = originalText;
+            });
           }
         </script>
 

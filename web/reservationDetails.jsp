@@ -160,6 +160,19 @@
 
         <div class="itinerary-wrapper">
           <div class="container">
+            <c:if test="${param.msg == 'PAYMENT_SUCCESS'}">
+              <div
+                class="alert alert-success bg-success bg-opacity-10 border-success text-success mb-4 p-4 rounded-4 shadow-sm animate__animated animate__fadeInDown">
+                <div class="d-flex align-items-center">
+                  <i class="fa-solid fa-circle-check fs-3 me-3"></i>
+                  <div>
+                    <h5 class="fw-bold mb-1">Payment Successfully Recorded!</h5>
+                    <p class="small mb-0 opacity-75">The transaction has been verified and the reservation is now fully
+                      settled. Official receipt is available for download.</p>
+                  </div>
+                </div>
+              </div>
+            </c:if>
             <!-- Error Handling -->
             <c:if test="${not empty errorMessage}">
               <div
@@ -572,13 +585,17 @@
             const fd = new FormData(this);
             const params = new URLSearchParams(Array.from(fd.entries())).toString();
 
-            // Show loading state if needed
+            // Determine target servlet
+            const isManual = this.id === 'receptionistPaymentForm';
+            const targetServlet = isManual ? "PaymentConfirmServlet" : "ReservationDetailsServlet";
+
+            // Show loading state
             const btn = this.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...';
 
-            fetch("ReservationDetailsServlet", {
+            fetch(targetServlet, {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: params
