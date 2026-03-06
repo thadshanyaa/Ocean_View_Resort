@@ -40,8 +40,12 @@ public class DashboardServlet extends HttpServlet {
                     request.setAttribute("dbError", "Guest profile not found. Please contact support.");
                 }
                 request.getRequestDispatcher("guestDashboard.jsp").forward(request, response);
+            } else if ("Manager".equals(user.getRole())) {
+                response.sendRedirect("ManagerDashboardServlet");
+            } else if ("Accountant".equals(user.getRole())) {
+                response.sendRedirect("AccountantDashboardServlet");
             } else {
-                // STAFF FLOW (Unchanged output)
+                // STAFF FLOW (Receptionist/Admin)
                 // Fetch summary stats
                 Map<String, Object> stats = reservationDAO.getSummaryStats();
                 request.setAttribute("stats", stats);

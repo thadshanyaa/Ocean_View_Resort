@@ -94,6 +94,10 @@ public class ManagerDashboardServlet extends HttpServlet {
             request.setAttribute("selectedPayStatus", paymentStatus);
             request.setAttribute("selectedPeriod", period);
 
+            // 4. Fetch Recent Activity
+            List<Map<String, Object>> recentStats = reservationDAO.getRecentReservations(10, null);
+            request.setAttribute("recentReservations", recentStats);
+
             request.getRequestDispatcher("managerDashboard.jsp").forward(request, response);
 
         } catch (Exception e) {

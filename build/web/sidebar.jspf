@@ -14,20 +14,19 @@
             <%-- GOD MODE: MANAGER --%>
             <c:when test="${sessionScope.user.role == 'Manager'}">
                 <!-- Operational -->
-                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Executive Dashboard</a>
+                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start shadow-sm fw-bold"><i class="fa-solid fa-house me-2"></i> Executive Dashboard</a>
+                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Analytics & Reports</a>
                 <a href="AvailabilityServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-calendar-check me-2"></i> Master Availability</a>
-                <a href="NewReservationServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-plus-circle me-2"></i> Override Booking</a>
                 <a href="searchReservation.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-magnifying-glass me-2"></i> Guest Records</a>
                 <!-- Financial -->
                 <hr class="border-secondary my-1">
-                <!-- Financial links removed (redundant) -->
-                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Revenue Reports (PDF)</a>
-                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-vial-circle-check me-2"></i> Testing Report (PDF)</a>
+                <a href="AdminPanelServlet?view=payments" class="btn btn-outline-primary text-start"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Billing Console</a>
             </c:when>
 
             <%-- SECURITY & MANAGEMENT MODE: ADMIN --%>
             <c:when test="${sessionScope.user.role == 'Admin'}">
                 <a href="AdminPanelServlet?view=dashboard" class="btn btn-outline-warning text-start ${param.view == 'dashboard' || empty param.view ? 'active' : ''}"><i class="fa-solid fa-gauge-high me-2"></i> Admin Dashboard</a>
+                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start fw-bold"><i class="fa-solid fa-chart-line me-2"></i> Manager Analytics</a>
                 <hr class="border-secondary my-1">
                 <a href="AdminPanelServlet?view=reservations" class="btn btn-outline-warning text-start ${param.view == 'reservations' ? 'active' : ''}"><i class="fa-solid fa-calendar-check me-2"></i> Reservations</a>
                 <a href="AdminPanelServlet?view=rooms" class="btn btn-outline-warning text-start ${param.view == 'rooms' ? 'active' : ''}"><i class="fa-solid fa-door-open me-2"></i> Room Management</a>
@@ -35,16 +34,14 @@
                 <a href="AdminPanelServlet?view=staff" class="btn btn-outline-warning text-start ${param.view == 'staff' ? 'active' : ''}"><i class="fa-solid fa-user-shield me-2"></i> Staff Accounts</a>
                 <hr class="border-secondary my-1">
                 <a href="AdminPanelServlet?view=payments" class="btn btn-outline-warning text-start ${param.view == 'payments' ? 'active' : ''}"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Payments & Bills</a>
-                <a href="AdminPanelServlet?view=reports" class="btn btn-outline-warning text-start ${param.view == 'reports' ? 'active' : ''}"><i class="fa-solid fa-chart-pie me-2"></i> Business Reports</a>
             </c:when>
 
             <%-- FINANCE MODE: ACCOUNTANT --%>
             <c:when test="${sessionScope.user.role == 'Accountant'}">
-                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Finance Dashboard</a>
+                <a href="AccountantDashboardServlet" class="btn btn-outline-success text-start fw-bold shadow-sm"><i class="fa-solid fa-gauge-high me-2"></i> Financial Dashboard</a>
                 <hr class="border-secondary my-1">
-                <!-- Financial links removed (redundant) -->
-                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-wallet me-2"></i> Daily Cash Closing</a>
-                <a href="#" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Monthly Revenue (PDF)</a>
+                <a href="AccountantDashboardServlet" class="btn btn-outline-info text-start"><i class="fa-solid fa-wallet me-2"></i> Daily Collections</a>
+                <a href="searchReservation.jsp" class="btn btn-outline-info text-start"><i class="fa-solid fa-magnifying-glass me-2"></i> Find Guest Bill</a>
             </c:when>
 
             <%-- OPERATIONAL MODE: RECEPTIONIST --%>

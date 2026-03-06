@@ -14,8 +14,8 @@
             <%-- GOD MODE: MANAGER --%>
             <c:when test="${sessionScope.user.role == 'Manager'}">
                 <!-- Operational -->
-                <a href="DashboardServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-house me-2"></i> Executive Dashboard</a>
-                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start shadow-sm fw-bold"><i class="fa-solid fa-chart-line me-2"></i> Analytics & Reports</a>
+                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start shadow-sm fw-bold"><i class="fa-solid fa-house me-2"></i> Executive Dashboard</a>
+                <a href="ManagerDashboardServlet" class="btn btn-outline-info text-start"><i class="fa-solid fa-chart-line me-2"></i> Analytics & Reports</a>
                 <a href="AvailabilityServlet" class="btn btn-outline-primary text-start"><i class="fa-solid fa-calendar-check me-2"></i> Master Availability</a>
                 <a href="searchReservation.jsp" class="btn btn-outline-primary text-start"><i class="fa-solid fa-magnifying-glass me-2"></i> Guest Records</a>
                 <!-- Financial -->

@@ -27,7 +27,8 @@ public class AccountantReportServlet extends HttpServlet {
         String start = request.getParameter("startDate");
         String end = request.getParameter("endDate");
 
-        try (Connection conn = DBConnectionManager.getConnection()) {
+        try {
+            Connection conn = DBConnectionManager.getInstance().getConnection();
             PaymentDAO pDao = new PaymentDAO(conn);
             List<Map<String, Object>> payments = pDao.searchPayments(start, end, null, "PAID", null);
 

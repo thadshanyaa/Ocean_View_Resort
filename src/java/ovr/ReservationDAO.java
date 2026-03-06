@@ -358,9 +358,9 @@ public class ReservationDAO implements GenericDAO<Reservation> {
         Map<String, Object> stats = new HashMap<>();
         StringBuilder sql = new StringBuilder(
             "SELECT " +
-            "  COUNT(r.id) as total_bookings, " +
+            "  COUNT(DISTINCT r.id) as total_bookings, " +
             "  SUM(CASE WHEN r.status = 'CANCELLED' THEN 1 ELSE 0 END) as cancelled_bookings, " +
-            "  SUM(b.total_amount + IFNULL((SELECT SUM(ac.total_price) FROM additional_charges ac WHERE ac.reservation_id = r.id), 0)) as total_revenue, " +
+            "  SUM(IFNULL(b.total_amount, 0) + IFNULL((SELECT SUM(ac.total_price) FROM additional_charges ac WHERE ac.reservation_id = r.id), 0)) as total_revenue, " +
             "  AVG(DATEDIFF(r.check_out, r.check_in)) as avg_stay " +
             "FROM reservations r " +
             "JOIN rooms rm ON r.room_id = rm.id " +
@@ -383,22 +383,31 @@ public class ReservationDAO implements GenericDAO<Reservation> {
                     stats.put("totalBookings", rs.getInt("total_bookings"));
                     stats.put("cancelledBookings", rs.getInt("cancelled_bookings"));
                     stats.put("totalRevenue", rs.getBigDecimal("total_revenue") != null ? rs.getBigDecimal("total_revenue") : BigDecimal.ZERO);
-                    stats.put("avgStay", rs.getDouble("avg_stay"));
+                    stats.put("avgStay", rs.getBigDecimal("avg_stay") != null ? rs.getBigDecimal("avg_stay").doubleValue() : 0.0);
                 }
             }
             
-            // Occupancy Rate Calculation: (Occupied Rooms / Total Rooms) * 100 for the period
-            // Simplified: (Sum of nights in range / (Total rooms * days in range))
-            String occSql = "SELECT (COUNT(r.id) * 100.0 / (SELECT COUNT(*) FROM rooms)) as occupancy_rate " +
+            // Occupancy Rate Calculation
+            String occSql = "SELECT (COUNT(DISTINCT r.id) * 100.0 / (SELECT GREATEST(COUNT(*), 1) FROM rooms)) as occupancy_rate " +
                            "FROM reservations r WHERE r.status NOT IN ('Pending', 'Cancelled') ";
             if (start != null && !start.isEmpty()) occSql += "AND r.check_in >= '" + start + "' ";
             if (end != null && !end.isEmpty()) occSql += "AND r.check_in <= '" + end + "' ";
             
             try (Statement s = connection.createStatement(); ResultSet rsOcc = s.executeQuery(occSql)) {
                 if (rsOcc.next()) stats.put("occupancyRate", rsOcc.getDouble(1));
+                else stats.put("occupancyRate", 0.0);
+            } catch (SQLException e) {
+                stats.put("occupancyRate", 0.0);
             }
             
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            stats.put("totalBookings", 0);
+            stats.put("cancelledBookings", 0);
+            stats.put("totalRevenue", BigDecimal.ZERO);
+            stats.put("avgStay", 0.0);
+            stats.put("occupancyRate", 0.0);
+        }
         return stats;
     }
 
@@ -494,7 +503,8 @@ public class ReservationDAO implements GenericDAO<Reservation> {
                      "FROM reservations r " +
                      "JOIN bills b ON r.id = b.reservation_id " +
                      "JOIN guests g ON r.guest_id = g.id " +
-                     "JOIN room_types rt ON r.room_type_id = rt.id " +
+                     "JOIN rooms rm ON r.room_id = rm.id " +
+                     "JOIN room_types rt ON rm.room_type_id = rt.id " +
                      "WHERE r.status != 'Cancelled' " +
                      "HAVING (b.total_amount - paid_amount) > 0";
         try (PreparedStatement stmt = connection.prepareStatement(sql);

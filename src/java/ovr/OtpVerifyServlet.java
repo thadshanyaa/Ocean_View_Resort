@@ -91,7 +91,17 @@ public class OtpVerifyServlet extends HttpServlet {
                     session.removeAttribute("targetURL");
                     response.sendRedirect(targetURL);
                 } else {
-                    response.sendRedirect("DashboardServlet");
+                    // Role-Based Redirection
+                    String role = user.getRole();
+                    if ("Manager".equals(role)) {
+                        response.sendRedirect("ManagerDashboardServlet");
+                    } else if ("Accountant".equals(role)) {
+                        response.sendRedirect("AccountantDashboardServlet");
+                    } else if ("Admin".equals(role)) {
+                        response.sendRedirect("AdminPanelServlet?view=dashboard");
+                    } else {
+                        response.sendRedirect("DashboardServlet");
+                    }
                 }
             } else {
                 // Fail

@@ -26,7 +26,8 @@ public class RefundServlet extends HttpServlet {
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         String reason = request.getParameter("reason");
 
-        try (Connection conn = DBConnectionManager.getConnection()) {
+        try {
+            Connection conn = DBConnectionManager.getInstance().getConnection();
             RefundDAO rDao = new RefundDAO(conn);
             rDao.processRefund(reservationId, amount, reason);
             
